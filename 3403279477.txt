@@ -60,3 +60,8 @@ end)
 Tab1.new("Button", "TW", "Gives you a Rank Tag", function()
 game:GetService("ReplicatedStorage").TW:FireServer()
 end)
+
+Tab1.new("Button", "Admin Tp", "Admin Armor", function()
+game:GetService("ReplicatedStorage").ok:FireServer()
+end)
+
