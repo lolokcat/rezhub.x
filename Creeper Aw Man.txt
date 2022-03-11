@@ -1,0 +1,58 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolokcat/Library3/main/Lib.lua"))();
+
+local UI = Library:Construct("Creeper Aw Man")
+
+local Tab1 = UI.new("Main")
+local Tab3 = UI.new("Credits", true)
+
+Tab3.new("Dropdown", "Credits", "Shows Credits", function(t) 
+    print(t)
+end, {"lolok - Scripting", "Rez - Scripting, Ideas"})
+
+Tab1.new("Button", "Give All Tools", "Gives you all tools.", function()
+game:GetService("ReplicatedStorage").ItemGiveCollect:FireServer("Death")
+wait(0.2)
+game:GetService("ReplicatedStorage").ItemGiveCollect:FireServer("FartGun")
+wait(0.2)
+game:GetService("ReplicatedStorage").ItemGiveCollect:FireServer("HealGun")
+wait(0.2)
+game:GetService("ReplicatedStorage").ItemGiveCollect:FireServer("Necromancer")
+wait(0.2)
+game:GetService("ReplicatedStorage").OwSw:FireServer()
+wait(0.2)
+game:GetService("ReplicatedStorage").OwSw2:FireServer()
+end)
+
+Tab1.new("Button", "Give Btools", "Gives you btools.", function()
+game:GetService("ReplicatedStorage").Btools2:FireServer()
+wait(0.2)
+game:GetService("ReplicatedStorage").Btools:FireServer()
+end)
+
+Tab1.new("Dropdown", "Teleport to area", function(v)
+if v ==  "Farlands" then
+                        game:GetService("ReplicatedStorage").Farlands:FireServer()
+elseif v == "Nether" then
+                                     game:GetService("ReplicatedStorage").NetherTP:FireServer()
+elseif v == "Spawn" then
+                            game:GetService("ReplicatedStorage").TeleportPlayer2:FireServer()    
+end
+end, {"Farland", "Nether", "Spawn"})
+
+Tab1.new("Button", "Become Burger man", "Makes you a burger man", function()
+game:GetService("ReplicatedStorage").Farlands:FireServer()
+end)
+
+Tab1.new("Button", "Become Sprite man", "Makes you a sprite man", function()
+game:GetService("ReplicatedStorage").Sprite:FireServer() 
+end)
+
+Tab1.new("Button", "Become Coffin man", "Makes you a coffin man", function()
+game:GetService("ReplicatedStorage").Coffin:FireServer() 
+end)
+
+Tab1.new("Button", "Break everyones levels", "Breaks everyones level.", function()
+for i, v in pairs(game.Players:GetPlayers()) do
+game:GetService("ReplicatedStorage").GiveLevel:FireServer(v.Name, 1000000000000000000)
+end
+end)

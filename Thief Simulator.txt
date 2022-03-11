@@ -1,0 +1,97 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolokcat/Library3/main/Lib.lua"))();
+
+local UI = Library:Construct("Theif Simulator")
+
+local Tab1 = UI.new("Autofarming")
+local Tab2 = UI.new("Upgrading")
+local Tab3 = UI.new("Credits", true)
+
+Tab3.new("Dropdown", "Credits", "Shows Credits", function(t) 
+    print(t)
+end, {"lolok - Scripting", "Rez - Scripting, Ideas"})
+
+Tab1.new("Toggle", "Auto Rob NPCs", "Farms NPCs", function(state)
+    local s = state 
+    while s do wait()
+        for index,obj in pairs(game.Workspace:GetChildren()) do 
+            if string.find(obj.Name, "Base") then 
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = obj.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
+                if not obj.HumanoidRootPart.ProximityPrompt then 
+                    return 
+                else
+                    fireproximityprompt(obj.HumanoidRootPart.ProximityPrompt)
+                end
+            end
+        end
+    end
+end)
+
+Tab1.new("Toggle", "Auto Sell", "Automatically sells when bag is full.", function(state)
+    local s = state 
+    while s do wait()
+        if game.Players.LocalPlayer.PlayerGui.Menu.FullBackpack.TextTransparency == 0 then 
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Sells.World1.Sell.CFrame
+        end
+    end
+end)
+
+local Range 
+
+Tab1.new("Textbox", "Range", "Input Range", function(text) 
+    if not text then return elseif text > 20 then Range = 20 else Range = text end
+end)
+
+Tab1.new("Toggle", "Rob Aura", "Rob Anyone Near You.", function(state)
+    local s = state
+    while s do wait()
+        for index,obj in pairs(game.Workspace:GetChildren()) do 
+            if string.find(obj.Name, "Base") then 
+                if not Range then
+                    Range = 20
+                end
+                if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - obj.HumanoidRootPart.Position).Magnitude < Range then 
+                    if not obj.HumanoidRootPart.ProximityPrompt then 
+                        return 
+                    else
+                        fireproximityprompt(obj.HumanoidRootPart.ProximityPrompt)
+                    end
+                end
+            end
+        end
+    end
+end)
+
+local Bag2buy
+
+Tab2.new("Dropdown", "Choose Backpack", "Choose A Backpack To Buy.", function(option)
+    if not option then return else Bag2buy = option end
+end, {"Basic bag", "Breifcase", "Duffel bag", "Laptop bag", "Large Backpack", "Office Bag", "Sports Bag", "Hiking Bag", "Suitcase", "Gym Bag"})
+
+Tab2.new("Button", "Buy Bag", "Buys the selected bag.", function()
+    if Bag2buy ~= nil then 
+        game:GetService("ReplicatedStorage").FrameworkReplicated.DataStreams["RequestPurchase_Functionv.07"]:InvokeServer("Backpack",Bag2buy)
+    end
+end)
+
+local Stat
+
+Tab2.new("Dropdown", "Choose Stat", "Choose A Stat to Upgrade.", function(option)
+    if not option then return else Stat = option end 
+end, {"Stealth", "Swipe Speed", "Intimidation", "Sprint Speed", "Strength"})
+
+Tab2.new("Button", "Upgrade Stat", "Upgrade Selected Stat", function()
+    if Stat ~= nil then 
+        game:GetService("ReplicatedStorage").FrameworkReplicated.DataStreams["UpgradeStats_Functionv.07"]:InvokeServer(Stat)
+    end
+end)
+
+Tab1.new("Toggle", "Auto Rob ATMs", "Automatically robs atms.", function(state)
+    local s = state 
+    while s do wait()
+        for i,v in pairs(game.Workspace.Map.ATMs:GetDescendants()) do
+            if string.find(v.Name, "Healthbar") then
+                game:GetService("ReplicatedStorage").FrameworkReplicated.DataStreams["GameTaskCompleted_Functionv.07"]:InvokeServer(v.Parent)
+            end
+        end
+    end
+end)

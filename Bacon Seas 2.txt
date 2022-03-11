@@ -1,0 +1,22 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolokcat/Library3/main/Lib.lua"))();
+
+local UI = Library:Construct("Bacon Seas2")
+
+local Tab1 = UI.new("Main")
+local Tab3 = UI.new("Credits", true)
+
+Tab3.new("Dropdown", "Credits", "Shows Credits", function(t) 
+    print(t)
+end, {"lolok - Scripting", "Rez - Scripting, Ideas"})
+
+Tab1.new("Toggle", "Give Fruits", "Gives you fruits (loop).", function(v)
+Fruit = v
+
+while Fruit do wait()
+game:GetService("Players").LocalPlayer.PlayerGui.SpinUI.Chat.Yes.Spin.Reward:FireServer("Rare")    
+end
+end)
+
+Tab1.new("Button", "Give Fruit", "Gives you a fruit.", function()
+game:GetService("Players").LocalPlayer.PlayerGui.SpinUI.Chat.Yes.Spin.Reward:FireServer("Rare")
+end)

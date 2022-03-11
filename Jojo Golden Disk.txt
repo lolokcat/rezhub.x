@@ -1,0 +1,112 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolokcat/Library3/main/Lib.lua"))();
+
+local UI = Library:Construct("Jojo: Golden Records")
+
+local Tab = UI.new("Main")
+
+local t = false
+local function OnMeteorAdded()
+    if t ~= false then
+        for index,meteorspawn in pairs(game.Workspace["Meteor Landing Spots"]:GetChildren()) do 
+            for index, child in pairs(meteorspawn:GetChildren()) do 
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.CFrame
+            end
+        end
+    end
+end
+
+for index,meteorspawn in pairs(game.Workspace["Meteor Landing Spots"]:GetChildren()) do 
+    meteorspawn.ChildAdded:Connect(OnMeteorAdded)
+end
+
+Tab.new("Toggle", "Meteor Farm", "Farms Meteors.", function(state)
+    s = state 
+    t = s 
+end)
+
+local function getAreas()
+    r = {}
+    w = game.Workspace
+    for i,t in pairs(w.Areas:GetChildren()) do
+        if t:IsA("Part") and not r[t.Name] then 
+            table.insert(r, t.Name)
+        end
+    end
+    return r 
+end
+
+local C
+local ToFarm
+local Dis
+
+Tab.new("Dropdown", "Select Area", "Select A Area To Teleport To.", function(a)
+    if not a then return else C = a end 
+end, getAreas())
+
+Tab.new("Button", "Teleport to Selected Area", "Teleport.", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Areas[C].CFrame
+end)
+
+local function getEnemies() 
+    local function IsDummy(Obj) 
+        if string.find(Obj.Name, "Dummy") then
+            return true 
+        else
+            return false 
+        end
+    end
+    R = {}
+    for index,Enemy in pairs(workspace.Enemies:GetChildren()) do 
+        if not IsDummy(Enemy) then 
+            table.insert(R, Enemy.Name)
+        end
+    end
+    return R 
+end
+
+Tab.new("Dropdown", "Choose Enemy", "Choose a enemy to farm.", function(t)
+    if not t then return else ToFarm = game.Workspace.Enemies[t] end 
+end, getEnemies(), getEnemies())
+
+Tab.new("Textbox", "Distance", "Distance from Enemy while farming (max 5)", function(t)
+    if not t then return else Dis = t end 
+end)
+
+local function ToHRP(Obj, Distance)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Obj.HumanoidRootPart.CFrame * CFrame.new(0, 0, Distance)
+end
+
+Tab.new("Toggle", "Farm Enemy", "Farms Selected Enemy.", function(state)
+    s = state 
+    while s and ToFarm ~= nil do wait()
+        if not Dis then 
+            Dis = 3
+        end
+        ToHRP(ToFarm, Dis) 
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new())
+    end
+end)
+
+local function getNPCs()
+    R = {}
+    for index,NPC in pairs(workspace.NPCs:GetChildren()) do 
+        table.insert(R, NPC.Name)
+    end
+    return R 
+end
+
+local TheNPC
+
+Tab.new("Dropdown", "Choose NPC", "Choose NPC To Act Upon.", function(t)
+    if not t then return else TheNPC = game.Workspace.NPCs[t] end 
+end, getNPCs(), getNPCs())
+
+Tab.new("Button", "Teleport to NPC", "Teleport to selected NPC", function()
+    ToHRP(TheNPC, -5)
+end)
+
+Tab.new("Button", "Take NPC Quest", "Take the selected NPC's quest", function()
+    ToHRP(TheNPC, -5)
+    wait(1)
+    fireproximityprompt(TheNPC.HumanoidRootPart.ProximityPrompt, 5)
+end)

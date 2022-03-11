@@ -1,0 +1,62 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolokcat/Library3/main/Lib.lua"))();
+
+local UI = Library:Construct("Murder Mystery 4")
+
+local Tab1 = UI.new("Main")
+local Tab3 = UI.new("Credits", true)
+
+Tab3.new("Dropdown", "Credits", "Shows Credits", function(t) 
+    print(t)
+end, {"lolok - Scripting", "Rez - Scripting, Ideas"})
+
+Tab1.new("Button", "Murderer", "Tells you the murderer.", function()
+for i,v in pairs(game.Players:GetChildren()) do 
+if v.Backpack:FindFirstChild("Knife") then
+        StarterGui:SetCore("SendNotification", {
+            Title = "Murderer",
+            Text = v.Name.." Is a Murderer!",
+            Duration = 5,
+        })
+    end
+end
+end)
+
+Tab1.new("Button", "Sheriff", "Tells you the sheriff.", function()
+for i,v in pairs(game.Players:GetChildren()) do 
+if v.Backpack:FindFirstChild("Revolver") then
+        StarterGui:SetCore("SendNotification", {
+            Title = "Sheriff",
+            Text = v.Name.." Is a Sheriff!",
+            Duration = 5,
+        })
+    end
+end
+end)
+
+Tab1.new("Dropdown", "Teleport to area", function(v)
+if v ==  "Farlands" then
+                        game:GetService("ReplicatedStorage").Farlands:FireServer()
+elseif v == "Nether" then
+                                     game:GetService("ReplicatedStorage").NetherTP:FireServer()
+elseif v == "Spawn" then
+                            game:GetService("ReplicatedStorage").TeleportPlayer2:FireServer()    
+end
+end, {"Farland", "Nether", "Spawn"})
+
+Tab1.new("Button", "Become Burger man", "Makes you a burger man", function()
+game:GetService("ReplicatedStorage").Farlands:FireServer()
+end)
+
+Tab1.new("Button", "Become Sprite man", "Makes you a sprite man", function()
+game:GetService("ReplicatedStorage").Sprite:FireServer() 
+end)
+
+Tab1.new("Button", "Become Coffin man", "Makes you a coffin man", function()
+game:GetService("ReplicatedStorage").Coffin:FireServer() 
+end)
+
+Tab1.new("Button", "Break everyones levels", "Breaks everyones level.", function()
+for i, v in pairs(game.Players:GetPlayers()) do
+game:GetService("ReplicatedStorage").GiveLevel:FireServer(v.Name, 1000000000000000000)
+end
+end)

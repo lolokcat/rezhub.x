@@ -1,0 +1,32 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolokcat/Library3/main/Lib.lua"))();
+
+local UI = Library:Construct("Anime Champions Simulator")
+
+local Tab1 = UI.new("Main")
+local Tab3 = UI.new("Credits", true)
+
+Tab3.new("Dropdown", "Credits", "Shows Credits", function(t) 
+    print(t)
+end, {"lolok - Scripting", "Rez - Scripting, Ideas"})
+
+Tab1.new("Toggle", "Auto Train", "Automatically trains strength.", function(v)
+autoTrain = v
+
+while autoTrain do wait()
+for i = 1,10 do
+    game:GetService("ReplicatedStorage").CombatRemote.Combat:FireServer(4, false)
+end
+end
+end)
+
+Tab1.new("Button", "Teleport to 3X", "Teleports you to 3X area", function()
+game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Boostlbl.CFrame
+end)
+
+Tab1.new("Button", "Reset", "Force resets ur character.", function()
+game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Boostlbl.CFrame
+end)
+
+Main.new("TextBox", "Player Name Here", "Teleports you to a player.", function(v) -- textbox (constructor)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[v].Character.HumanoidRootPart.CFrame
+end)

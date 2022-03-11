@@ -1,0 +1,133 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolokcat/Library3/main/Lib.lua"))();
+
+local UI = Library:Construct("Rebirth Champions X")
+
+local Tab1 = UI.new("Main")
+local Tab3 = UI.new("Credits", true)
+
+Tab3.new("Dropdown", "Credits", "Shows Credits", function(t) 
+    print(t)
+end, {"lolok - Scripting", "Rez - Scripting, Ideas"})
+
+local function ToObject(OBJ, Offset) 
+    if Offset == nil then
+        Offset = 0
+    end
+    game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = OBJ.CFrame * CFrame.new(0, 0, Offset)
+end
+
+Tab1.new("Toggle", "Auto Click", "Clicks Automatically for you.", function(state)
+    s=state 
+    while s do wait()
+        game:GetService("ReplicatedStorage").Events.Click3:FireServer()
+    end
+end)
+
+local function GetEggNames()
+    local R = {}
+    for index,egg in pairs(game.ReplicatedStorage.Assets.Eggs:GetChildren()) do 
+        table.insert(R, egg.Name) 
+    end
+    return R
+end
+
+local egg2buy = "Basic"
+
+Tab1.new("Dropdown", "Choose Egg", "Choose Egg To Buy", function(egg) 
+    egg2buy = egg 
+end, GetEggNames())
+
+Tab1.new("Button", "Buy Egg", "Buys Selected Egg", function()
+    game:GetService("ReplicatedStorage").Functions.Unbox:InvokeServer(egg2buy,"Single")
+end)
+
+local n2rbth = 1
+
+local Ting = {}
+
+function GetRebirthNums()
+    local Rebirths = {}
+    local index1 = 1
+    for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.RebirthFrame.Top.Holder.ScrollingFrame:GetChildren()) do
+        if v:IsA("ImageLabel") and not table.find(Rebirths, v.Name) then
+            index1 = index1 + 1
+            local Numbers = {}
+            for index,name in pairs(string.split(v.Main.Label.Text, " ")) do
+                table.insert(Numbers, name) 
+            end
+            local Number = Numbers[1]
+            Ting[Number] = {Value = index1}
+            table.insert(Rebirths, Number)
+        end
+    end
+    return Rebirths
+end
+
+function GetActualValue(t, v) 
+    for key,value in pairs(t) do 
+        if key == v then 
+            return value.Value
+        end
+    end
+end
+
+Tab1.new("Dropdown", "Choose Rebirth", "Choose Rebirth Number",function(value)
+    n2rbth = GetActualValue(Ting, value) 
+end, GetRebirthNums())
+
+Tab1.new("Toggle", "Auto Rebirth", "Automatically Rebirths", function(state)
+    j=state 
+    while j do wait() 
+        print(n2rbth)
+        game:GetService("ReplicatedStorage").Events.Rebirth:FireServer(n2rbth)
+    end
+end)
+
+function GetUpgrades()
+    local Upgrades = {}
+    for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.UpgradesFrame.Top.Holder.ScrollingFrame:GetChildren()) do
+        if v:IsA("ImageLabel") and not table.find(Upgrades, v.Name) then 
+            table.insert(Upgrades, v.Name)
+        end
+    end
+    return Upgrades
+end
+local Upgrade
+
+Tab1.new("Dropdown", "Select Upgrade", "Select Upgrade to Upgrade", function(t)
+    Upgrade = t 
+end, GetUpgrades())
+
+Tab1.new("Button", "Upgrade", "Upgrade Selected Upgrade", function()
+    if Upgrade ~= nil then
+        game:GetService("ReplicatedStorage").Functions.Upgrade:InvokeServer(Upgrade)
+    end
+end)
+
+Tab1.new("Button", "Unlock all Rebirths", "Unlocks all Rebirth Buttons", function()
+    for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.RebirthFrame.Top.Holder.ScrollingFrame:GetChildren()) do
+        if v:IsA("ImageLabel") then
+            v.Active = true
+            v.Visible = true
+        end
+    end
+    
+    for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.AutoRebirthFrame.Top.Holder.ScrollingFrame:GetChildren()) do
+        if v:IsA("ImageLabel") then
+            v.Active = true
+            v.Visible = true
+        end
+    end
+end)
+
+Tab1.new("Button", "Get All Gamepasses", "Unlocks all gamepasses.", function()
+    for i,v in pairs(game:GetService("Players").LocalPlayer.Passes:GetChildren()) do
+        if v:IsA("BoolValue") then
+            v.Value = true
+        end
+    end
+end)
+
+Tab1.new("Button", "Hide Name", "Hides your name.", function()
+    game:GetService("Players").LocalPlayer.Character.Head.Rank:Destroy()
+end)

@@ -1,0 +1,39 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolokcat/Library3/main/Lib.lua"))();
+
+local UI = Library:Construct("Anime Mania")
+
+local Tab1 = UI.new("Main")
+local Tab3 = UI.new("Credits", true)
+
+Tab3.new("Dropdown", "Credits", "Shows Credits", function(t) 
+    print(t)
+end, {"lolok - Scripting", "Rez - Scripting, Ideas"})
+
+Tab1.new("Toggle", "Autofarm", "Autofarms NPCs.", function(v)
+autoFarm = v
+
+while autoFarm do wait()
+for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+    pcall(function()
+        while v.Humanoid.Health > 0 do
+            repeat wait(0.1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame + (v.HumanoidRootPart.CFrame.lookVector * -4)
+                game:GetService("Players").LocalPlayer.Backpack.Input.Remote:FireServer({"Light"})
+            until v.Humanoid.Health > 0 or autoFarm == false
+        end
+    end)
+end
+end
+end)
+
+Tab1.new("Toggle", "Anti Ban", "Stops you from being banned.", function(v)
+AntiBan = v
+
+local OldNameCall = nil
+OldNameCall = hookmetamethod(game, "__namecall", function(Self, ...)
+    if not checkcaller() and getnamecallmethod() == "FireServer" and Self.Name == "Ban" and game.Players.LocalPlayer and AntiBan then
+        return print("game tried to ban!")
+    end
+    return OldNameCall(Self, ...)
+end)
+end)
