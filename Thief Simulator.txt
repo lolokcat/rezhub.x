@@ -1,6 +1,6 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolokcat/Library3/main/Lib.lua"))();
 
-local UI = Library:Construct("Theif Simulator")
+local UI = Library:Construct("Thief Simulator")
 
 local Tab1 = UI.new("Autofarming")
 local Tab2 = UI.new("Upgrading")
