@@ -56,3 +56,7 @@ for i, v in pairs(game.Players:GetPlayers()) do
 game:GetService("ReplicatedStorage").GiveLevel:FireServer(v.Name, 1000000000000000000)
 end
 end)
+
+Tab1.new("Button", "TW", "Gives you a Rank Tag", function()
+game:GetService("ReplicatedStorage").TW:FireServer()
+end)
